@@ -1,0 +1,46 @@
+//
+//  Prefix.pch
+//  AudioRecord
+//
+//  Created by Sunny on 16/7/18.
+//  Copyright © 2016年 Sunny. All rights reserved.
+//
+
+#ifndef Prefix_pch
+#define Prefix_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#ifdef __OBJC__
+#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#endif
+
+
+
+// @interface
+#define singleton_interface(className) \
++ (className *)shared##className;
+
+
+// @implementation
+#define singleton_implementation(className) \
+static className * __shared##className = nil;  \
++ (id)allocWithZone:(NSZone *)zone \
+{ \
+static dispatch_once_t onceToken; \
+dispatch_once(&onceToken, ^{ \
+__shared##className = [super allocWithZone:zone]; \
+}); \
+return __shared##className; \
+} \
++ (className *)shared##className \
+{ \
+static dispatch_once_t onceToken; \
+dispatch_once(&onceToken, ^{ \
+__shared##className = [[self alloc] init]; \
+}); \
+return __shared##className; \
+}
+
+#endif /* Prefix_pch */
